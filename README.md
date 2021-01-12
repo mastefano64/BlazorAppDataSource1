@@ -11,12 +11,29 @@ In entrambe le tipologie è presente: “un esempio di paginazione tramite botto
 DataSourceClient e DataSourceServer
  
 Sotto si possono vedere le principali proprietà ed i metodi della classe “BaseDataSource”. Per maggiori informazioni si rimanda al codice presente nel progetto su GitHub.
-   
-Result, Count>
-Page, MinPage, MaxPage, Pagesize, OrderbyColumn, OrderbyDirection
-HasFirstPage, HasPrevPage, HasNextPage, HasLastPage
-FirstPage, PrevPage, NextPage, LastPage
-LoadPaggedData( … ), GotoPage(int page)
-GotoFirstPage(), GotoPrevPage(), GotoNextPage(), GotoLastPage()
-SortByColumn( … )
-Refresh()
+  
+ List<TViewModel> Result 
+ int Count 
+ int Page
+ int MinPage
+ int MaxPage
+ int Pagesize
+ string OrderbyColumn
+ string OrderbyDirection
+ bool HasFirstPage
+ bool HasPrevPage
+ bool HasNextPage
+ bool HasLastPage
+ int FirstPage
+ int PrevPage
+ int NextPage
+ int LastPage
+ Task LoadPaggedData(int page, int pagesize, string orderbycolumn, string orderbydirection = "asc")
+ Task<bool> GotoPage(int page)
+ Task<bool> GotoFirstPage()
+ Task<bool> GotoPrevPage()
+ Task<bool> GotoNextPage()
+ Task<bool> GotoLastPage()
+ Task<bool> SortByColumn(string column, string direction = "asc") 
+ Task<bool> Refresh()
+ Refresh()
