@@ -8,7 +8,7 @@ Le griglie Grid4, Grid5, Grid6 implementano una paginazione lato server client u
  
 In entrambe le tipologie è presente: “un esempio di paginazione tramite bottoni”, “un esempio di paginazione tramite barra di navigazione”,  “un esempio di paginazione tramite barra di navigazione e form per operazioni CRUD”. Sotto si può trovare un estratto della griglia 3.
 
-- IMPORTANTE: I dati visualizzati sono stati creati attraverso un generatore di nomi casuale, pertanto non sono legati a nessuna persona reale.
+IMPORTANTE: I dati visualizzati sono stati creati attraverso un generatore di nomi casuale, pertanto non sono legati a nessuna persona reale. '#f03c15'
 
 ![example1](/BlazorAppDataSource1/exemple1.png)
 
