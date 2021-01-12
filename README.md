@@ -10,11 +10,17 @@ In entrambe le tipologie è presente: “un esempio di paginazione tramite botto
 
 ![example1](/BlazorAppDataSource1/exemple1.png)
 
+L’immagine sovrastante mostra la pagina web in cui viene visualizzata una lista, sulla parte sovrastante è presente una barra di navigazione, a lato dei nomi delle colonne si possono vedere 2 fraccettine mediante le quali è possibile variare l’ordinamento.
+
 ![example2](/BlazorAppDataSource1/exemple2.png)
 
 ![example3](/BlazorAppDataSource1/exemple3.png)
+
+Le 2 immagini sovrastanti mostrano il template HTML ed il relativo codice C# corrispondente. Come si può vedere il codice C# è minimo, la logica è stata traferita nella classe “DataSourceClient”. Nel momento in cui viene creata la classe “DataSourceClient” Vengono passati come parametro un oggetto “AppStudentiSearch” che contiene i cambi oggetto della ricerca, ed un oggetto “StudentiService” che contiene i metodi che effettuano le chiamate http.
  
 ## DataSourceClient e DataSourceServer
+
+E’ possibile implementare una paginazione lato client o lato server. Nella paginazione lato client la chiamata iniziale ritorna tutti i dati, nel momento in cui paginiamo non vengono più effettuate chiamate al server.  Nella paginazione lato server la chiamata iniziale ritorna il numero totale di record e gli elementi della pagina corrente, nel momento in cui paginiamo viene effettuata una chiamata al server che ritorna gli elementi presenti nella pagina richiesta.
  
 Sotto si possono vedere le principali proprietà ed i metodi della classe “BaseDataSource”. Per maggiori informazioni si rimanda al codice presente nel progetto su GitHub.
   
