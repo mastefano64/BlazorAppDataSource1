@@ -41,6 +41,22 @@ namespace DataSourceRazorLibrary1
             result = new List<TViewModel>();
         }
 
+        public List<TViewModel> Result
+        {
+            get
+            {
+                return result;
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return result.Count;
+            }
+        }
+
         public int Page
         {
             get
@@ -85,14 +101,6 @@ namespace DataSourceRazorLibrary1
             get
             {
                 return currOrderbydirection;
-            }
-        }
-
-        public List<TViewModel> Result
-        {
-            get
-            {
-                return result;
             }
         }
 
@@ -175,14 +183,6 @@ namespace DataSourceRazorLibrary1
             get
             {
                 return maxpage;
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                return result.Count;
             }
         }
 
