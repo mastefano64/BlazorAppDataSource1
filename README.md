@@ -7,6 +7,12 @@ Le griglie Grid1, Grid2, Grid3 implementano una paginazione lato client utilizza
 Le griglie Grid4, Grid5, Grid6 implementano una paginazione lato server client utilizzando il datasource “DataSourceServer”.
  
 In entrambe le tipologie è presente: “un esempio di paginazione tramite bottoni”, “un esempio di paginazione tramite barra di navigazione”,  “un esempio di paginazione tramite barra di navigazione e form per operazioni CRUD”. Sotto si può trovare un estratto della griglia 3.
+
+![example1](/BlazorAppDataSource1/example1.png)
+
+![example2](/BlazorAppDataSource1/example2.png)
+
+![example3](/BlazorAppDataSource1/example3.png)
  
 ## DataSourceClient e DataSourceServer
  
