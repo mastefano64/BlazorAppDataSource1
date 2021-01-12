@@ -12,6 +12,8 @@
 
 <p>Paginazione lato <b>client</b> (legge tutti i dati necessari)</p>
 
+<p style="color: red;">IMPORTANTE: I dati visualizzati sono stati creati attraverso un generatore di nomi casuale, pertanto non sono legati a nessuna persona reale.</p>
+
 @if (studenti != null)
 {
     <p>
@@ -91,7 +93,7 @@ else
 
 <DialogEditStudente @ref="dialogeditstudente" OnModificaStudente="@ModificaStudente"></DialogEditStudente>
 
-<LoadingBar DataSource="@ds"></LoadingBar> 
+<LoadingBar DataSource="@ds"></LoadingBar>
 
 @code {
     private List<StudentiViewModel> studenti;
