@@ -20,7 +20,7 @@ Le 2 immagini sovrastanti mostrano il template HTML ed il relativo codice C# cor
  
 ## DataSourceClient e DataSourceServer
 
-E’ possibile implementare una paginazione lato client o lato server. Nella paginazione lato client la chiamata iniziale ritorna tutti i dati, nel momento in cui paginiamo non vengono più effettuate chiamate al server.  Nella paginazione lato server la chiamata iniziale ritorna il numero totale di record e gli elementi della pagina corrente, nel momento in cui paginiamo viene effettuata una chiamata al server che ritorna gli elementi presenti nella pagina richiesta.
+E’ possibile implementare una paginazione lato client o lato server. Nella paginazione lato client la chiamata iniziale ritorna tutti i dati, nel momento in cui paginiamo non vengono più effettuate chiamate al server.  Nella paginazione lato server la chiamata iniziale ritorna il numero totale di record e gli elementi presenti nella pagina corrente, nel momento in cui paginiamo viene effettuata una chiamata al server che ritorna gli elementi presenti nella pagina richiesta.
  
 Sotto si possono vedere le principali proprietà ed i metodi della classe “BaseDataSource”. Per maggiori informazioni si rimanda al codice presente nel progetto su GitHub.
   
