@@ -1,0 +1,94 @@
+﻿@using BlazorAppDataSource1.Shared
+
+@if (ShowDialog == true)
+{
+    <div class="modal fade show d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifica studente</h5>
+                    <button type="button" class="close" @onclick="Hide">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <EditForm Model="@Item" OnValidSubmit="@ModificaStudente">
+                        <div class="form-group">
+                            <label for="Nome" class="control-label">Nome</label>
+                            <InputText class="form-control" id="Nome" name="Nome" @bind-Value="@Item.Nome" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Cognome" class="control-label">Cognome</label>
+                            <InputText class="form-control" id="Cognome" name="Cognome" @bind-Value="@Item.Cognome" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Indirizzo" class="control-label">Indirizzo</label>
+                            <InputText class="form-control" id="Indirizzo" name="Indirizzo" @bind-Value="@Item.Indirizzo" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Cap" class="control-label">Cap</label>
+                            <InputText class="form-control" id="Cap" name="Cap" @bind-Value="@Item.Cap" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Citta" class="control-label">Citta</label>
+                            <InputText class="form-control" id="Citta" name="Citta" @bind-Value="@Item.Citta" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Provincia" class="control-label">Provincia</label>
+                            <InputText class="form-control" id="Provincia" name="Citta" @bind-Value="@Item.Provincia" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Stato" class="control-label">Stato</label>
+                            <InputText class="form-control" id="Stato" name="Stato" @bind-Value="@Item.Stato" />
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Modifica</button>
+                            <button type="button" class="btn btn-secondary" @onclick="Hide">Annulla</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool ShowDialog { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<StudentiViewModel> OnModificaStudente { get; set; }
+
+    private StudentiViewModel Item;
+
+    public void Show(StudentiViewModel item)
+    {
+        ShowDialog = true;
+        Item = new StudentiViewModel();
+        Item.Id = item.Id;
+        Item.Nome = item.Nome;
+        Item.Cognome = item.Cognome;
+        Item.Indirizzo = item.Indirizzo;
+        Item.Cap = item.Cap;
+        Item.Citta = item.Citta;
+        Item.Provincia = item.Provincia;
+        Item.Stato = item.Stato;
+        StateHasChanged();
+    }
+
+    public void ModificaStudente()
+    {
+        ShowDialog = false;
+        OnModificaStudente.InvokeAsync(Item);
+        Item = null;
+    }
+
+    public void Hide()
+    {
+        ShowDialog = false;
+        Item = null;
+        StateHasChanged();
+    }
+}

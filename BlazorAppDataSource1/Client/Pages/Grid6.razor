@@ -1,0 +1,168 @@
+﻿@page "/grid6"
+
+@using DataSourceRazorLibrary1
+@using DataSourceRazorLibrary1.Component
+@using BlazorAppDataSource1.Client.Model
+@using BlazorAppDataSource1.Client.Service
+@using BlazorAppDataSource1.Shared
+@implements IDisposable
+@inject HttpClient clientHttp
+
+<h1>Grid-3</h1>
+
+<p>Paginazione lato <b>server</b> (legge tutti i dati necessari)</p>
+
+@if (studenti != null)
+{
+    <p>
+        <button type="button" class="btn btn-primary" @onclick="OpenRicercaDialog">Ricerca studente</button>
+        &nbsp;-&nbsp;<NavigationBar DataSource="@ds"></NavigationBar> (@ds.Page)
+    </p>
+
+    <p>
+        <button type="button" class="btn btn-primary" @onclick="OpenNuovoStudenteDialog">Nuovo studente</button>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 112px;">
+                    <GridOrderColumn DisplayName="Id" ColumnName="Id" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 200px;">
+                    <GridOrderColumn DisplayName="Nome" ColumnName="Nome" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 200px;">
+                    <GridOrderColumn DisplayName="Cognome" ColumnName="Cognome" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 300px;">
+                    <GridOrderColumn DisplayName="Indirizzo" ColumnName="Indirizzo" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 90px;">
+                    <GridOrderColumn DisplayName="Cap" ColumnName="Cap" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 230px;">
+                    <GridOrderColumn DisplayName="Citta" ColumnName="Citta" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 130px;">
+                    <GridOrderColumn DisplayName="Provincia" ColumnName="Provincia" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th style="width: 110px;">
+                    <GridOrderColumn DisplayName="Stato" ColumnName="Stato" DataSource="@ds"></GridOrderColumn>
+                </th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StudentiViewModel studente in studenti)
+            {
+                <tr>
+                    <td>@studente.Id</td>
+                    <td>@studente.Nome</td>
+                    <td>@studente.Cognome</td>
+                    <td>@studente.Indirizzo</td>
+                    <td>@studente.Cap</td>
+                    <td>@studente.Citta</td>
+                    <td>@studente.Provincia</td>
+                    <td>@studente.Stato</td>
+                    <th>
+                        <button type="button" class="btn btn-primary" @onclick="() => OpenModificaStudenteDialog(studente)">
+                            M
+                        </button>
+                        &nbsp;
+                        <button type="button" class="btn btn-primary" @onclick="() => CancellaStudente(studente)">
+                            C
+                        </button>
+                        &nbsp;
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+<DialogSearchStudente @ref="dialogsearchstudente" OnNuovaRicerca="@NuovaRicerca"></DialogSearchStudente>
+
+<DialogNewStudente @ref="dialognewstudente" OnNuovoStudente="@NuovoStudente"></DialogNewStudente>
+
+<DialogEditStudente @ref="dialogeditstudente" OnModificaStudente="@ModificaStudente"></DialogEditStudente>
+
+<LoadingBar DataSource="@ds"></LoadingBar>
+
+@code {
+    private List<StudentiViewModel> studenti;
+    private DialogSearchStudente dialogsearchstudente;
+    private DialogNewStudente dialognewstudente;
+    private DialogEditStudente dialogeditstudente;
+    private StudentiService<AppStudentiSearch, StudentiViewModel> service;
+    private DataSourceServer<AppStudentiSearch, StudentiViewModel> ds;
+    private AppStudentiSearch search = new AppStudentiSearch();
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = new StudentiService<AppStudentiSearch, StudentiViewModel>(clientHttp);
+        ds = new DataSourceServer<AppStudentiSearch, StudentiViewModel>(search, service);
+        ds.PagingUrl = "Studenti/GetStudentiByQuery2"; //paginazione lato server
+
+        ds.LoadPaggedDataCompleted += LoadPaggedDataCompleted;
+
+        await ds.LoadPaggedData(1, 15, "Id");
+    }
+
+    private void OpenRicercaDialog()
+    {
+        dialogsearchstudente.Show(search);
+    }
+
+    private async Task NuovaRicerca()
+    {
+        await ds.LoadPaggedData(1, 15, "Id");
+    }
+
+    private void LoadPaggedDataCompleted(object sender, LoadPaggedDataArgs<StudentiViewModel> e)
+    {
+        studenti = e.Items;
+        StateHasChanged();
+    }
+
+    //
+
+    private void OpenNuovoStudenteDialog()
+    {
+        dialognewstudente.Show();
+    }
+
+    public async Task NuovoStudente(StudentiViewModel studente)
+    {
+        await service.InsertStudente(studente);
+        await ds.Refresh();
+    }
+
+    private void OpenModificaStudenteDialog(StudentiViewModel studente)
+    {
+        dialogeditstudente.Show(studente);
+    }
+
+    private async Task ModificaStudente(StudentiViewModel studente)
+    {
+        await service.UpdateStudente(studente);
+        await ds.Refresh();
+    }
+
+    private async Task CancellaStudente(StudentiViewModel studente)
+    {
+        await service.DeleteStudente(studente.Id);
+        await ds.Refresh();
+    }
+
+    //
+
+    public void Dispose()
+    {
+        ds.LoadPaggedDataCompleted -= LoadPaggedDataCompleted;
+    }
+}

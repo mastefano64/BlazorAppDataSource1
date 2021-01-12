@@ -1,0 +1,41 @@
+﻿@page "/"
+
+<h1>BlazorAppDataSource</h1>
+
+<b><a target="_blank" href="https://www.linkedin.com/in/stefano-marchisio-sviluppatore-web-angular-javascript-aspnet-fullstack/">Stefano Marchisio - Sviluppatore web - Angular - ASP.NET Core</a></b>
+
+<br /><br />
+
+<h4>Struttura del progetto su GitHub</h4>
+
+<p>
+    Il progetto su GitHub contiene 6 esempi di griglia rispettivamente denominate: Grid1, Grid2, Grid3, Grid4 Grid5, Grid6.
+</p>
+<p>
+    Le griglie Grid1, Grid2, Grid3 implementano una paginazione lato client utilizzando il datasource “DataSourceClient”.
+</p>
+<p>
+    Le griglie Grid4, Grid5, Grid6 implementano una paginazione lato server client utilizzando il datasource “DataSourceServer”.
+</p>
+<p>
+    In entrambe le tipologie è presente: “un esempio di paginazione tramite bottoni”, “un esempio di paginazione tramite barra di navigazione”,  “un esempio di paginazione tramite barra di navigazione e form per operazioni CRUD”. Sotto si può trovare un estratto della griglia 3.
+</p>
+
+<h2>DataSourceClient e DataSourceServer</h2>
+
+<p>
+    Sotto si possono vedere le principali proprietà ed i metodi della classe “BaseDataSource”. Per maggiori informazioni si rimanda al codice presente nel progetto su GitHub.
+    <br /><br />
+    <i>Result, Count</i><br />
+    <i>Page, MinPage, MaxPage, Pagesize, OrderbyColumn, OrderbyDirection</i><br />
+    <i>HasFirstPage, HasPrevPage, HasNextPage, HasLastPage</i><br />
+    <i>FirstPage, PrevPage, NextPage, LastPage</i><br />
+    <i>LoadPaggedData( … ), GotoPage(int page)</i><br />
+    <i>GotoFirstPage(), GotoPrevPage(), GotoNextPage(), GotoLastPage()</i><br />
+    <i>SortByColumn( … )</i><br />
+    <i>Refresh()</i><br />
+</p>
+
+<p>
+    E’ possibile implementare una paginazione lato client o lato server. Nella paginazione lato client la chiamata iniziale ritorna tutti i dati, nel momento in cui paginiamo non vengono più effettuate chiamate al server.  Nella paginazione lato server la chiamata iniziale ritorna il numero totale di record e gli elementi della pagina corrente, nel momento in cui paginiamo viene effettuata una chiamata al server che ritorna gli elementi presenti nella pagina richiesta.
+</p>

@@ -1,0 +1,84 @@
+﻿@implements IDisposable
+
+<div class="d-inline-block">
+    <div>
+        <span>
+            @DisplayName
+        </span>
+        @if (DataSource.Count != 0)
+        {
+            <span class="OrderbyColumnBox">
+                <span class="@SelectedUpClass" @onclick='() => ChangeColumnDirection("desc")'>
+                    <span class="oi oi-arrow-thick-top" aria-hidden="true"></span>
+                </span>
+                <span class="@SelectedDwClass" @onclick='() => ChangeColumnDirection("asc")'>
+                    <span class="oi oi-arrow-thick-bottom" aria-hidden="true"></span>
+                </span>
+            </span>
+
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IDataSource DataSource { get; set; }
+
+    [Parameter]
+    public string DisplayName { get; set; }
+
+    [Parameter]
+    public string ColumnName { get; set; }
+
+    private bool SelectedColumn = false;
+
+    private string SelectedUpClass = "";
+
+    private string SelectedDwClass = "";
+
+    protected override void OnInitialized()
+    {
+        DataSource.NavigationChanged += NavigationChanged;
+        CreateGridOrderColumn();
+    }
+
+    public void NavigationChanged(object sender, NavigationArgs e)
+    {
+        CreateGridOrderColumn();
+    }
+
+    private void CreateGridOrderColumn()
+    {
+        if (DataSource.OrderbyColumn.ToLower() == ColumnName.ToLower())
+        {
+            SelectedColumn = true;
+            if (DataSource.OrderbyDirection.ToLower() == "asc")
+            {
+                SelectedDwClass = "ArrowUpActive";
+                SelectedUpClass = "ArrowNormal";
+            }
+            else
+            {
+                SelectedDwClass = "ArrowNormal";
+                SelectedUpClass = "ArrowUpActive";
+            }
+        }
+        else
+        {
+            SelectedColumn = false;
+            SelectedDwClass = "ArrowNormal";
+            SelectedUpClass = "ArrowNormal";
+        }
+        StateHasChanged();
+    }
+
+    private void ChangeColumnDirection(string direction)
+    {
+        DataSource.SortByColumn(ColumnName, direction);
+    }
+
+    public void Dispose()
+    {
+        DataSource.NavigationChanged -= NavigationChanged;
+    }
+}

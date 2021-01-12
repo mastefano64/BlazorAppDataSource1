@@ -1,0 +1,126 @@
+﻿@implements IDisposable
+
+<div class="d-inline-block">
+    @if (PageBar.Count > 0)
+    {
+        <nav>
+            <ul class="pagination">
+                @if (DataSource.Page != DataSource.MinPage)                
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="#" @onclick="() => ChangePage(DataSource.MinPage)" @onclick:preventDefault="true">
+                            <span>&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" @onclick="() => ChangePage(DataSource.PrevPage)" @onclick:preventDefault="true">
+                            <span><b>&lt;</b></span>
+                        </a>
+                    </li>
+                }
+                @foreach (int page in PageBar)
+                {
+                    @if (DataSource.Page == page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="#" @onclick="() => ChangePage(page)" @onclick:preventDefault="true">
+                                @(page)
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="#" @onclick="() => ChangePage(page)" @onclick:preventDefault="true">
+                                @(page)
+                            </a>
+                        </li>
+                    }
+                }
+                @if (DataSource.Page != DataSource.MaxPage)              
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="#" @onclick="() => ChangePage(DataSource.NextPage)" @onclick:preventDefault="true">
+                            <span><b>&gt;</b></span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" @onclick="() => ChangePage(DataSource.MaxPage)" @onclick:preventDefault="true">
+                            <span>&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IDataSource DataSource { get; set; }
+
+    [Parameter]
+    public int DisplayPage { get; set; } = 7;
+
+    private List<int> PageBar = new List<int>();
+
+    protected override void OnInitialized()
+    {
+        DataSource.NavigationChanged += NavigationChanged;
+        CreateNavigationBar();
+    }
+
+    public void NavigationChanged(object sender, NavigationArgs e)
+    {
+        CreateNavigationBar();
+    }
+
+    private void CreateNavigationBar()
+    {
+        List<int> list = new List<int>();
+        int hdp = (DisplayPage - 1) / 2;
+        int pagein = DataSource.Page - hdp;
+        int pagefi = DataSource.Page + hdp;
+        if (pagein < DataSource.MinPage && pagefi <= DataSource.MaxPage)
+        {
+            pagein = DataSource.MinPage;
+            int offset = Math.Abs(DataSource.MaxPage - DataSource.Page);
+            if (offset < hdp)
+                pagefi = DataSource.MaxPage;
+        }
+        if (pagein >= DataSource.MinPage && pagefi > DataSource.MaxPage)
+        {
+            pagefi = DataSource.MaxPage;
+            int offset = Math.Abs(DataSource.Page - DataSource.MinPage);
+            if (offset < hdp)
+                pagein = DataSource.MinPage;
+        }
+        if (pagein < DataSource.MinPage && pagefi > DataSource.MaxPage)
+        {
+            pagein = DataSource.MinPage;
+            int offset1 = Math.Abs(DataSource.MaxPage - DataSource.Page);
+            if (offset1 < hdp)
+                pagefi = DataSource.MaxPage;
+            pagefi = DataSource.MaxPage;
+            int offset2 = Math.Abs(DataSource.Page - DataSource.MinPage);
+            if (offset2 < hdp)
+                pagein = DataSource.MinPage;
+        }
+        for (int i = pagein; i <= pagefi; i++)
+        {
+            list.Add(i);
+        }
+        PageBar = list;
+        StateHasChanged();
+    }
+
+    private void ChangePage(int page)
+    {
+        DataSource.GotoPage(page);
+    }
+
+    public void Dispose()
+    {
+        DataSource.NavigationChanged -= NavigationChanged;
+    }
+}

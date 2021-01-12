@@ -1,0 +1,181 @@
+﻿@page "/grid4"
+
+@using DataSourceRazorLibrary1
+@using BlazorAppDataSource1.Client.Model
+@using BlazorAppDataSource1.Client.Service
+@using BlazorAppDataSource1.Shared
+@implements IDisposable
+@inject HttpClient clientHttp
+
+<h1>Grid-4</h1>
+
+<p>Paginazione lato <b>server</b> (legge solo i dati necessari)</p>
+
+@if (studenti != null)
+{
+    <p>
+        <button type="button" class="btn btn-primary" @onclick="OpenRicercaDialog">Ricerca studente</button>
+        &nbsp;-&nbsp;
+        <button class="btn btn-primary" type="button" @onclick="ButtonFirst">Primo studente</button>&nbsp;
+        <button class="btn btn-primary" type="button" @onclick="ButtonPrev">Studente precedente</button>&nbsp;
+        <spam>@ds.Page di @ds.MaxPage</spam>&nbsp;
+        <button class="btn btn-primary" type="button" @onclick="ButtonNext">Studente successivo</button>&nbsp;
+        <button class="btn btn-primary" type="button" @onclick="ButtonLast">Ultimo studente</button>&nbsp;
+    </p>
+
+    <p>
+        <button class="btn btn-secondary" type="button" @onclick="ButtonOrderbyId">Ordina per Id</button>&nbsp;
+        <button class="btn btn-secondary" type="button" @onclick="ButtonOrderbyNome">Ordina per Nome</button>&nbsp;
+        <button class="btn btn-secondary" type="button" @onclick="ButtonOrderbyCognome">Ordina per Cognome</button>&nbsp;
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 112px;">Id</th>
+                <th style="width: 200px;">Nome</th>
+                <th style="width: 200px;">Cognome</th>
+                <th style="width: 360px;">Indirizzo</th>
+                <th style="width: 90px;">Cap</th>
+                <th style="width: 230px;">Citta</th>
+                <th style="width: 120px;">Provincia</th>
+                <th style="width: 90px;">Stato</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StudentiViewModel studente in studenti)
+            {
+                <tr>
+                    <td>@studente.Id</td>
+                    <td>@studente.Nome</td>
+                    <td>@studente.Cognome</td>
+                    <td>@studente.Indirizzo</td>
+                    <td>@studente.Cap</td>
+                    <td>@studente.Citta</td>
+                    <td>@studente.Provincia</td>
+                    <td>@studente.Stato</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+<DialogSearchStudente @ref="dialogsearchstudente" OnNuovaRicerca="@NuovaRicerca"></DialogSearchStudente>
+
+@code {
+    private DialogSearchStudente dialogsearchstudente;
+    private List<StudentiViewModel> studenti;
+    private DataSourceServer<AppStudentiSearch, StudentiViewModel> ds;
+    private AppStudentiSearch search = new AppStudentiSearch();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var service = new StudentiService<AppStudentiSearch, StudentiViewModel>(clientHttp);
+        ds = new DataSourceServer<AppStudentiSearch, StudentiViewModel>(search, service);
+        ds.PagingUrl = "Studenti/GetStudentiByQuery2"; //paginazione lato server
+
+        ds.LoadPaggedDataCompleted += LoadPaggedDataCompleted;
+
+        await ds.LoadPaggedData(1, 15, "Id");
+    }
+
+    private void OpenRicercaDialog()
+    {
+        dialogsearchstudente.Show(search);
+    }
+
+    private async Task NuovaRicerca()
+    {
+        await ds.LoadPaggedData(1, 15, "Id");
+    }
+
+    private async Task ButtonFirst()
+    {
+        if (ds.HasFirstPage == false)
+        {
+            return;
+        }
+        await ds.GotoFirstPage();
+    }
+
+    private async Task ButtonPrev()
+    {
+        if (ds.HasPrevPage == false)
+        {
+            return;
+        }
+        await ds.GotoPrevPage();
+    }
+
+    private async Task ButtonNext()
+    {
+        if (ds.HasNextPage == false)
+        {
+            return;
+        }
+        await ds.GotoNextPage();
+    }
+
+    private async Task ButtonLast()
+    {
+        if (ds.HasLastPage == false)
+        {
+            return;
+        }
+        await ds.GotoLastPage();
+    }
+
+    private async Task ButtonOrderbyId()
+    {
+        string column = "Id";
+        string direction = "asc";
+        if (ds.OrderbyColumn == "Id")
+        {
+            if (ds.OrderbyDirection != "asc")
+                direction = "asc";
+            else direction = "desc";
+        }
+        await ds.LoadPaggedData(1, 15, column, direction);
+    }
+
+    private async Task ButtonOrderbyNome()
+    {
+        string column = "Nome";
+        string direction = "asc";
+        if (ds.OrderbyColumn == "Nome")
+        {
+            if (ds.OrderbyDirection != "asc")
+                direction = "asc";
+            else direction = "desc";
+        }
+        await ds.LoadPaggedData(1, 15, column, direction);
+    }
+
+    private async Task ButtonOrderbyCognome()
+    {
+        string column = "Cognome";
+        string direction = "asc";
+        if (ds.OrderbyColumn == "Cognome")
+        {
+            if (ds.OrderbyDirection != "asc")
+                direction = "asc";
+            else direction = "desc";
+        }
+        await ds.LoadPaggedData(1, 15, column, direction);
+    }
+
+    private void LoadPaggedDataCompleted(object sender, LoadPaggedDataArgs<StudentiViewModel> e)
+    {
+        studenti = e.Items;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ds.LoadPaggedDataCompleted -= LoadPaggedDataCompleted;
+    }
+}

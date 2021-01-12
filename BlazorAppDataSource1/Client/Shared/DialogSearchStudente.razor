@@ -1,0 +1,87 @@
+﻿@using BlazorAppDataSource1.Client.Model
+
+@if (ShowDialog == true)
+{
+    <div class="modal fade show d-block">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ricerca studenti</h5>
+                    <button type="button" class="close" @onclick="Hide">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <EditForm Model="@ItemIn" OnValidSubmit="@Cerca">
+                        <div class="form-group">
+                            <label for="Nome" class="control-label">Nome</label>
+                            <InputText class="form-control" id="Nome" name="Nome" @bind-Value="@ItemIn.Nome" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Cognome" class="control-label">Cognome</label>
+                            <InputText class="form-control" id="Cognome" name="Cognome" @bind-Value="@ItemIn.Cognome" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Cap" class="control-label">Cap</label>
+                            <InputText class="form-control" id="Cap" name="Cap" @bind-Value="@ItemIn.Cap" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Citta" class="control-label">Citta</label>
+                            <InputText class="form-control" id="Citta" name="Citta" @bind-Value="@ItemIn.Citta" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Provincia" class="control-label">Provincia</label>
+                            <InputText class="form-control" id="Provincia" name="Citta" @bind-Value="@ItemIn.Provincia" />
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Cerca</button>
+                            <button type="button" class="btn btn-secondary" @onclick="Hide">Annulla</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool ShowDialog { get; set; } = false;
+
+    [Parameter]
+    public EventCallback OnNuovaRicerca { get; set; }
+
+    private AppStudentiSearch ItemOut;
+
+    private AppStudentiSearch ItemIn;
+
+    public void Show(AppStudentiSearch item)
+    {
+        ShowDialog = true;
+        ItemOut = item;
+        ItemIn = item.Clone();
+        StateHasChanged();
+    }
+
+    public void Cerca()
+    {
+        ShowDialog = false;
+        ItemOut.Nome = ItemIn.Nome;
+        ItemOut.Cognome = ItemIn.Cognome;
+        ItemOut.Cap = ItemIn.Cap;
+        ItemOut.Citta = ItemIn.Citta;
+        ItemOut.Provincia = ItemIn.Provincia;
+        OnNuovaRicerca.InvokeAsync();
+        ItemIn = null;
+
+    }
+
+    public void Hide()
+    {
+        ShowDialog = false;
+        ItemIn = null;
+        StateHasChanged();
+    }
+}

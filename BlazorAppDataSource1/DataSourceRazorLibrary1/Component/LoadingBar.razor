@@ -1,0 +1,43 @@
+﻿@implements IDisposable
+
+@if (Visible == true)
+{
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <img src="loader.gif" />
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IDataSource DataSource { get; set; }
+
+    private bool Visible = false;
+
+    protected override void OnInitialized()
+    {
+        DataSource.NavigationChanging += NavigationChanging;
+        DataSource.NavigationChanged += NavigationChanged;
+    }
+
+    public void NavigationChanging(object sender, NavigationArgs e)
+    {
+        Visible = true;
+        StateHasChanged();
+    }
+
+    public void NavigationChanged(object sender, NavigationArgs e)
+    {
+        Visible = false;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        DataSource.NavigationChanging -= NavigationChanging;
+        DataSource.NavigationChanged -= NavigationChanged;
+    }
+}

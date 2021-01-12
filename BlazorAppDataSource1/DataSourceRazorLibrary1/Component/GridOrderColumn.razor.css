@@ -1,0 +1,20 @@
+﻿
+.OrderbyColumnBox {
+    padding-left: 4px;
+}
+
+.ArrowUpActive {
+    opacity: 1.0;
+}   
+
+.ArrowDwActive {
+    opacity: 1.0;
+}
+
+.ArrowNormal {
+    opacity: 0.3;
+}
+
+    .ArrowNormal:hover {
+        opacity: 1.0;
+    }

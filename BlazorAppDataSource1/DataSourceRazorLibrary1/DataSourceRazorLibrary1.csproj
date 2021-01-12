@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Component\GridOrderColumn - Copy.razor.css" />
+    <None Remove="Component\GridOrderColumn.razor.css" />
+    <None Remove="Component\NavigationBar.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Component\GridOrderColumn.razor.css" />
+    <Content Include="Component\NavigationBar.razor.css" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.1" />
+  </ItemGroup>
+
+</Project>
