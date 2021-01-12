@@ -10,9 +10,9 @@ In entrambe le tipologie è presente: “un esempio di paginazione tramite botto
 
 ![example1](/BlazorAppDataSource1/exemple1.png)
 
-![example2](/BlazorAppDataSource1/example2.png)
+![example2](/BlazorAppDataSource1/exemple2.png)
 
-![example3](/BlazorAppDataSource1/example3.png)
+![example3](/BlazorAppDataSource1/exemple3.png)
  
 ## DataSourceClient e DataSourceServer
  
