@@ -1,6 +1,6 @@
 # BlazorAppDataSource1
 
-Il progetto su GitHub contiene 6 esempi di griglia rispettivamente denominate: Grid1, Grid2, Grid3, Grid4 Grid5, Grid6.
+Il progetto su GitHub contiene 6 esempi di griglia rispettivamente denominate: Grid1, Grid2, Grid3, Grid4 Grid5, Grid6. 
  
 Le griglie Grid1, Grid2, Grid3 implementano una paginazione lato client utilizzando il datasource “DataSourceClient”.
  
